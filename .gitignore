@@ -4,6 +4,7 @@ build/
 .turbo/
 .worktrees/
 *.log
+*.tsbuildinfo
 .DS_Store
 Thumbs.db
 .env
