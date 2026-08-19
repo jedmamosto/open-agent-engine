@@ -1,0 +1,28 @@
+version: "1.0.0"
+project:
+  name: "open-agent-engine"
+  description: "Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine"
+  authors:
+    - "Lead Orchestrator & Open Source Community"
+
+targets:
+  - claude-code
+  - cursor
+  - windsurf
+  - roo-code
+  - aider
+  - aaif-agents-md
+
+skills:
+  handoff:
+    source: "local"
+    version: "1.0.0"
+  impeccable:
+    source: "local"
+    version: "1.0.0"
+  workspace-init:
+    source: "local"
+    version: "1.0.0"
+  subagent-coordinator:
+    source: "local"
+    version: "1.0.0"

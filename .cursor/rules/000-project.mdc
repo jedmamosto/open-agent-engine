@@ -1,0 +1,13 @@
+---
+description: "Open Multi-Agent Engine Core Architecture and Rules"
+globs: "**/*"
+alwaysApply: true
+---
+
+# Project Directives
+
+Adhere strictly to directives defined in [AGENTS.md](file:///C:/Users/ASUS/Documents/VSCode/open-agent-engine/AGENTS.md).
+
+- Respect single canonical core in `.agents/`.
+- Validate all user configs with Zod schemas.
+- Ensure emitted adapter configurations stay strictly under 150 lines.

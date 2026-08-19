@@ -1,0 +1,24 @@
+{
+  "name": "open-agent-engine-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter \"@agent-engine/*\" run build",
+    "dev": "pnpm --filter \"@agent-engine/cli\" run dev",
+    "test": "vitest run",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc -b",
+    "clean": "pnpm -r exec rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
