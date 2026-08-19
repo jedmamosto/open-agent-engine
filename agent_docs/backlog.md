@@ -4,7 +4,7 @@
 
 | Ticket ID | Type | Priority | Status | Lock Paths | Acceptance Criteria |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `ENG-101` | `[Core]` | `P0` | `[TODO]` | `packages/core/src/schema/**` | Zod schemas for Personas, Rules, Skills, and Hooks with 100% test coverage. |
+| `ENG-101` | `[Core]` | `P0` | `[DONE]` | `packages/core/src/schema/**`, `packages/core/src/parser/**` | Zod schemas for Personas, Rules, Skills, Hooks, Config & validation engine with 100% test coverage. |
 | `ENG-102` | `[CLI]` | `P0` | `[TODO]` | `packages/cli/src/commands/build.ts`, `packages/cli/src/adapters/**` | Transpiler adapters for Claude Code, Cursor, Roo Code, and AAIF `AGENTS.md`. |
 | `ENG-103` | `[CLI]` | `P0` | `[TODO]` | `packages/cli/src/commands/init.ts` | Interactive scaffolding wizard with prompts, template extraction, and auto-build. |
 | `ENG-104` | `[SkillHub]` | `P1` | `[TODO]` | `packages/cli/src/commands/skill.ts` | `agent-engine add skill`, `create skill`, `update skill` registry and git installer. |
