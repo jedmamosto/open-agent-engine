@@ -29,3 +29,12 @@
 ### Epic 4: Ephemeral Git Worktree Orchestrator
 - Windows-hardened `.worktrees/task-<id>` spawner with git index lock detection.
 - Deterministic test gate verification and branch teardown.
+
+### Epic 5: Live Antigravity & Local System Sync (`@agent-engine/sync` / `agent-engine sync`)
+- **Objective**: Maintain real-time or on-demand alignment between the developer's active Antigravity platform (`~/.gemini/antigravity/`, `~/.gemini/config/skills/`, `~/.gemini/config/agents/`) and the `open-agent-engine` repository.
+- **Key Capabilities**:
+  - `agent-engine sync --pull`: Import newly evolved skills, hooks, and orchestrator personas from the active local Antigravity runtime into `.agents/` canonical core.
+  - `agent-engine sync --push`: Export compiled open-agent-engine configurations and custom skills back into local Antigravity stores and target IDE configs.
+  - **Drift & Semantic Diff Detection**: Detect when the open-source repository falls behind active local workflows or vice versa, offering interactive 3-way merge resolution.
+  - **Selective Masking**: Ensure local private tokens/paths are sanitized during sync.
+
