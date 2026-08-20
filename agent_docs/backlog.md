@@ -45,4 +45,13 @@
 - Pedagogical diagnostic linter (`agent-engine doctor --explain`) teaching the architectural "Why" behind prompt cache invalidation and rule modularity.
 - Interactive tutorial sandbox templates (`init --template=interactive-tutorial`) with refactoring katas.
 
+---
+
+## 3. DevOps & Release Operations Backlog
+
+| Task ID | Component | Status | Description |
+| :--- | :--- | :--- | :--- |
+| `OPS-101` | `[CI/CD]` | `[REMIND_IN_FUTURE]` | Add `NPM_TOKEN` secret to GitHub repository settings (`https://github.com/jedmamosto/open-agent-engine/settings/secrets/actions`) to enable zero-touch automated npm publishing on git tag push. |
+
+
 
