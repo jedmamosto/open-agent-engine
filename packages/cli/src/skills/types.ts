@@ -48,7 +48,9 @@ export interface CatalogSkillInfo {
 }
 
 export interface SkillAddOptions {
-  nameOrSource: string;
+  nameOrSource?: string;
+  target?: string;
+  source?: string;
   name?: string;
   rootDir?: string;
   dir?: string;
@@ -76,6 +78,7 @@ export interface SkillCreateOptions {
   entrypoint?: string;
   compatibility?: string[] | string | Record<string, unknown>;
   template?: 'progressive' | 'standard' | 'minimal';
+  tags?: string[];
   body?: string;
   rootDir?: string;
   dir?: string;

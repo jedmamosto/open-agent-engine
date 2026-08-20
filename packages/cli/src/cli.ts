@@ -139,118 +139,29 @@ export async function runCli(argv = process.argv): Promise<void> {
       }
     });
 
-  // skill list
+  // skill command (subcommand dispatcher)
   cli
-    .command('skill list', 'List all installed agent skills and catalog definitions')
-    .alias('skill ls')
-    .option('-d, --dir <dir>', 'Root workspace directory', { default: process.cwd() })
-    .option('--catalog', 'Include available community catalog skills in output')
-    .action(async (options: { dir?: string; catalog?: boolean }) => {
-      try {
-        console.log(pc.cyan('\n  ◆  Installed Agent Skills (.agents/skills/)\n'));
-        const result = await executeSkillList({
-          rootDir: options.dir,
-          includeCatalog: options.catalog,
-        });
-
-        if (result.skills.length === 0) {
-          console.log(pc.gray('  (No skills currently installed in workspace)\n'));
-        } else {
-          for (let i = 0; i < result.skills.length; i++) {
-            const skill = result.skills[i];
-            const isLast = i === result.skills.length - 1 && !result.catalog;
-            const branch = isLast ? '  └─ ' : '  ├─ ';
-            const statusIcon = skill.valid ? pc.green('✔') : pc.red('✖');
-            const versionStr = skill.version ? pc.gray(`(v${skill.version})`) : '';
-            console.log(
-              `${branch}${statusIcon} ${pc.bold(skill.name.padEnd(24))} ${versionStr} -> ${pc.gray(skill.description || 'No description')}`
-            );
-          }
-        }
-
-        if (result.catalog && result.catalog.length > 0) {
-          console.log(pc.cyan('\n  ◆  Available Community Catalog Skills\n'));
-          for (let i = 0; i < result.catalog.length; i++) {
-            const cat = result.catalog[i];
-            const isLast = i === result.catalog.length - 1;
-            const branch = isLast ? '  └─ ' : '  ├─ ';
-            const statusStr = cat.installed ? pc.green('[installed]') : pc.gray('[available]');
-            console.log(
-              `${branch}${statusStr} ${pc.bold(cat.name.padEnd(24))} (v${cat.version}) -> ${pc.gray(cat.description)}`
-            );
-          }
-        }
-
-        console.log('');
-      } catch (err: unknown) {
-        console.error(pc.red(`\n  ✖  Skill list failed: ${err instanceof Error ? err.message : String(err)}\n`));
-        process.exitCode = 1;
-      }
-    });
-
-  // skill add
-  cli
-    .command('skill add <nameOrSource>', 'Install a skill from catalog, local path, or remote URL')
+    .command('skill [action] [target]', 'Manage agent skills (list, add, create, remove)')
+    .alias('skills')
     .option('--name <name>', 'Override destination skill name')
-    .option('-d, --dir <dir>', 'Root workspace directory', { default: process.cwd() })
-    .option('-f, --force', 'Overwrite existing skill if already installed')
-    .option('-b, --build', 'Trigger automatic configuration rebuild after install')
-    .option('-t, --targets <targets>', 'Comma-separated build targets')
-    .action(
-      async (
-        nameOrSource: string,
-        options: { name?: string; dir?: string; force?: boolean; build?: boolean; targets?: string }
-      ) => {
-        try {
-          console.log(pc.cyan(`\n  ◆  Installing skill "${nameOrSource}" ...\n`));
-          const targetList = options.targets
-            ? options.targets.split(',').map((t) => t.trim()).filter(Boolean)
-            : undefined;
-
-          const result = await executeSkillAdd({
-            nameOrSource,
-            name: options.name,
-            rootDir: options.dir,
-            force: options.force,
-            build: options.build,
-            targets: targetList,
-          });
-
-          console.log(pc.green(`  ✔  Skill "${result.name}" successfully installed -> ${pc.gray(result.path)}`));
-          if (result.buildResult) {
-            console.log(
-              pc.green(`  ✔  Rebuilt ${result.buildResult.totalFiles} target adapter files in ${result.buildResult.durationMs}ms.`)
-            );
-          }
-          console.log('');
-        } catch (err: unknown) {
-          if (err instanceof SkillError || err instanceof Error) {
-            console.error(pc.red(`\n  ✖  Failed to install skill: ${err.message}\n`));
-          } else {
-            console.error(pc.red('\n  ✖  Failed to install skill with an unknown error.\n'));
-          }
-          process.exitCode = 1;
-        }
-      }
-    );
-
-  // skill create
-  cli
-    .command('skill create <name>', 'Scaffold a new custom skill template')
     .option('--description <description>', 'Skill description')
     .option('--version <version>', 'Skill semver version', { default: '1.0.0' })
     .option('--template <template>', 'Template type (progressive, standard, minimal)', { default: 'progressive' })
+    .option('--catalog', 'Include available community catalog skills in output')
     .option('-d, --dir <dir>', 'Root workspace directory', { default: process.cwd() })
-    .option('-f, --force', 'Overwrite if skill already exists')
+    .option('-f, --force', 'Overwrite existing skill if already present')
     .option('-b, --build', 'Trigger automatic configuration rebuild')
     .option('-t, --targets <targets>', 'Comma-separated build targets')
     .action(
       async (
-        name: string,
+        action: string | undefined,
+        target: string | undefined,
         options: {
+          name?: string;
           description?: string;
           version?: string;
           template?: 'progressive' | 'standard' | 'minimal';
+          catalog?: boolean;
           dir?: string;
           force?: boolean;
           build?: boolean;
@@ -258,80 +169,149 @@ export async function runCli(argv = process.argv): Promise<void> {
         }
       ) => {
         try {
-          console.log(pc.cyan(`\n  ◆  Scaffolding custom skill "${name}" ...\n`));
+          const act = (action || 'list').toLowerCase();
+          const rootDir = options.dir || process.cwd();
           const targetList = options.targets
             ? options.targets.split(',').map((t) => t.trim()).filter(Boolean)
             : undefined;
 
-          const result = await executeSkillCreate({
-            name,
-            description: options.description,
-            version: options.version,
-            template: options.template,
-            rootDir: options.dir,
-            force: options.force,
-            build: options.build,
-            targets: targetList,
-          });
+          if (act === 'list' || act === 'ls') {
+            console.log(pc.cyan('\n  ◆  Installed Agent Skills (.agents/skills/)\n'));
+            const result = await executeSkillList({
+              rootDir,
+              includeCatalog: options.catalog,
+            });
 
-          console.log(pc.green(`  ✔  Created skill "${result.name}" (v${result.version}) -> ${pc.gray(result.path)}`));
-          if (result.buildResult) {
-            console.log(
-              pc.green(`  ✔  Rebuilt ${result.buildResult.totalFiles} target adapter files in ${result.buildResult.durationMs}ms.`)
-            );
+            if (result.skills.length === 0) {
+              console.log(pc.gray('  (No skills currently installed in workspace)\n'));
+            } else {
+              for (let i = 0; i < result.skills.length; i++) {
+                const skill = result.skills[i];
+                const isLast = i === result.skills.length - 1 && !result.catalog;
+                const branch = isLast ? '  └─ ' : '  ├─ ';
+                const statusIcon = skill.valid ? pc.green('✔') : pc.red('✖');
+                const versionStr = skill.version ? pc.gray(`(v${skill.version})`) : '';
+                console.log(
+                  `${branch}${statusIcon} ${pc.bold(skill.name.padEnd(24))} ${versionStr} -> ${pc.gray(skill.description || 'No description')}`
+                );
+              }
+            }
+
+            if (result.catalog && result.catalog.length > 0) {
+              console.log(pc.cyan('\n  ◆  Available Community Catalog Skills\n'));
+              for (let i = 0; i < result.catalog.length; i++) {
+                const cat = result.catalog[i];
+                const isLast = i === result.catalog.length - 1;
+                const branch = isLast ? '  └─ ' : '  ├─ ';
+                const statusStr = cat.installed ? pc.green('[installed]') : pc.gray('[available]');
+                console.log(
+                  `${branch}${statusStr} ${pc.bold(cat.name.padEnd(24))} (v${cat.version}) -> ${pc.gray(cat.description)}`
+                );
+              }
+            }
+            console.log('');
+            return;
           }
-          console.log('');
+
+          if (act === 'add') {
+            const skillSource = target;
+            if (!skillSource) {
+              console.error(pc.red('\n  ✖  Missing skill name or source. Usage: agent-engine skill add <nameOrSource>\n'));
+              process.exitCode = 1;
+              return;
+            }
+
+            console.log(pc.cyan(`\n  ◆  Installing skill "${skillSource}" ...\n`));
+            const result = await executeSkillAdd({
+              nameOrSource: skillSource,
+              name: options.name,
+              rootDir,
+              force: options.force,
+              build: options.build,
+              targets: targetList,
+            });
+
+            console.log(pc.green(`  ✔  Skill "${result.name}" successfully installed -> ${pc.gray(result.path)}`));
+            if (result.buildResult) {
+              console.log(
+                pc.green(`  ✔  Rebuilt ${result.buildResult.totalFiles} target adapter files in ${result.buildResult.durationMs}ms.`)
+              );
+            }
+            console.log('');
+            return;
+          }
+
+          if (act === 'create') {
+            const skillName = target;
+            if (!skillName) {
+              console.error(pc.red('\n  ✖  Missing skill name. Usage: agent-engine skill create <name>\n'));
+              process.exitCode = 1;
+              return;
+            }
+
+            console.log(pc.cyan(`\n  ◆  Scaffolding custom skill "${skillName}" ...\n`));
+            const result = await executeSkillCreate({
+              name: skillName,
+              description: options.description,
+              version: options.version,
+              template: options.template,
+              rootDir,
+              force: options.force,
+              build: options.build,
+              targets: targetList,
+            });
+
+            console.log(pc.green(`  ✔  Created skill "${result.name}" (v${result.version}) -> ${pc.gray(result.path)}`));
+            if (result.buildResult) {
+              console.log(
+                pc.green(`  ✔  Rebuilt ${result.buildResult.totalFiles} target adapter files in ${result.buildResult.durationMs}ms.`)
+              );
+            }
+            console.log('');
+            return;
+          }
+
+          if (act === 'remove' || act === 'rm') {
+            const skillName = target;
+            if (!skillName) {
+              console.error(pc.red('\n  ✖  Missing skill name. Usage: agent-engine skill remove <name>\n'));
+              process.exitCode = 1;
+              return;
+            }
+
+            console.log(pc.cyan(`\n  ◆  Removing skill "${skillName}" ...\n`));
+            const result = await executeSkillRemove({
+              name: skillName,
+              rootDir,
+              build: options.build,
+              targets: targetList,
+            });
+
+            console.log(pc.green(`  ✔  Removed skill "${result.name}"`));
+            for (const p of result.removedPaths) {
+              console.log(pc.gray(`     deleted: ${p}`));
+            }
+            if (result.buildResult) {
+              console.log(
+                pc.green(`  ✔  Rebuilt ${result.buildResult.totalFiles} target adapter files in ${result.buildResult.durationMs}ms.`)
+              );
+            }
+            console.log('');
+            return;
+          }
+
+          console.error(pc.red(`\n  ✖  Unknown skill action "${act}". Available actions: list, add, create, remove\n`));
+          process.exitCode = 1;
         } catch (err: unknown) {
           if (err instanceof SkillError || err instanceof Error) {
-            console.error(pc.red(`\n  ✖  Failed to create skill: ${err.message}\n`));
+            console.error(pc.red(`\n  ✖  Skill error: ${err.message}\n`));
           } else {
-            console.error(pc.red('\n  ✖  Failed to create skill with an unknown error.\n'));
+            console.error(pc.red('\n  ✖  Skill error with an unknown failure.\n'));
           }
           process.exitCode = 1;
         }
       }
     );
-
-  // skill remove
-  cli
-    .command('skill remove <name>', 'Remove an installed skill from workspace')
-    .alias('skill rm')
-    .option('-d, --dir <dir>', 'Root workspace directory', { default: process.cwd() })
-    .option('-b, --build', 'Trigger automatic configuration rebuild after removal')
-    .option('-t, --targets <targets>', 'Comma-separated build targets')
-    .action(async (name: string, options: { dir?: string; build?: boolean; targets?: string }) => {
-      try {
-        console.log(pc.cyan(`\n  ◆  Removing skill "${name}" ...\n`));
-        const targetList = options.targets
-          ? options.targets.split(',').map((t) => t.trim()).filter(Boolean)
-          : undefined;
-
-        const result = await executeSkillRemove({
-          name,
-          rootDir: options.dir,
-          build: options.build,
-          targets: targetList,
-        });
-
-        console.log(pc.green(`  ✔  Removed skill "${result.name}"`));
-        for (const p of result.removedPaths) {
-          console.log(pc.gray(`     deleted: ${p}`));
-        }
-        if (result.buildResult) {
-          console.log(
-            pc.green(`  ✔  Rebuilt ${result.buildResult.totalFiles} target adapter files in ${result.buildResult.durationMs}ms.`)
-          );
-        }
-        console.log('');
-      } catch (err: unknown) {
-        if (err instanceof SkillError || err instanceof Error) {
-          console.error(pc.red(`\n  ✖  Failed to remove skill: ${err.message}\n`));
-        } else {
-          console.error(pc.red('\n  ✖  Failed to remove skill with an unknown error.\n'));
-        }
-        process.exitCode = 1;
-      }
-    });
 
   cli.help();
   cli.version('0.1.0');
