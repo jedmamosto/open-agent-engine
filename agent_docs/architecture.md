@@ -3,43 +3,48 @@
 ## 1. System Topology & Data Flow
 
 ```mermaid
-graph TD
-    subgraph Storage [1. Canonical Storage (.agents/)]
-        Config[config.yaml]
-        Personas[personas/*.yaml]
-        Skills[skills/*/SKILL.md]
-        Rules[rules/*.yaml]
-        Hooks[hooks/*.yaml]
+flowchart TD
+    subgraph Storage["1. Canonical Storage (.agents/)"]
+        Config["config.yaml"]
+        Personas["personas/*.yaml"]
+        Skills["skills/*/SKILL.md"]
+        Rules["rules/*.yaml"]
+        Hooks["hooks/*.yaml"]
     end
 
-    subgraph Core [2. Core Parser & Validator (@agent-engine/core)]
-        Parser[YAML / Frontmatter Parser]
-        ZodValidator[Zod Schema Validator]
-        DepGraph[Skill Dependency & Anchor Resolver]
+    subgraph Core["2. Core Parser & Validator (@agent-engine/core)"]
+        Parser["YAML / Frontmatter Parser"]
+        ZodValidator["Zod Schema Validator"]
+        DepGraph["Skill Dependency & Anchor Resolver"]
     end
 
-    subgraph Adapters [3. Target Adapters (@agent-engine/cli)]
-        ClaudeAdapter[Claude Code Adapter]
-        CursorAdapter[Cursor MDC Adapter]
-        WindsurfAdapter[Windsurf Adapter]
-        RooAdapter[Roo Code Adapter]
-        AiderAdapter[Aider Adapter]
-        AAIFAdapter[AAIF AGENTS.md Adapter]
+    subgraph Adapters["3. Target Adapters (@agent-engine/cli)"]
+        ClaudeAdapter["Claude Code Adapter"]
+        CursorAdapter["Cursor MDC Adapter"]
+        WindsurfAdapter["Windsurf Adapter"]
+        RooAdapter["Roo Code Adapter"]
+        AiderAdapter["Aider Adapter"]
+        AAIFAdapter["AAIF AGENTS.md Adapter"]
     end
 
-    subgraph Output [4. Native Target Files]
-        ClaudeOut[CLAUDE.md + .claude/]
-        CursorOut[.cursor/rules/*.mdc]
-        WindsurfOut[.windsurfrules + .windsurf/]
-        RooOut[.roomodes + .clinerules]
-        AiderOut[.aider.conf.yml + .aider.prompt.md]
-        AAIFOut[AGENTS.md]
+    subgraph Output["4. Native Target Files"]
+        ClaudeOut["CLAUDE.md + .claude/"]
+        CursorOut[".cursor/rules/*.mdc"]
+        WindsurfOut[".windsurfrules + .windsurf/"]
+        RooOut[".roomodes + .clinerules"]
+        AiderOut[".aider.conf.yml + .aider.prompt.md"]
+        AAIFOut["AGENTS.md"]
     end
 
     Storage --> Parser
     Parser --> ZodValidator
     ZodValidator --> DepGraph
-    DepGraph --> ClaudeAdapter & CursorAdapter & WindsurfAdapter & RooAdapter & AiderAdapter & AAIFAdapter
+    DepGraph --> ClaudeAdapter
+    DepGraph --> CursorAdapter
+    DepGraph --> WindsurfAdapter
+    DepGraph --> RooAdapter
+    DepGraph --> AiderAdapter
+    DepGraph --> AAIFAdapter
     ClaudeAdapter --> ClaudeOut
     CursorAdapter --> CursorOut
     WindsurfAdapter --> WindsurfOut
@@ -253,15 +258,44 @@ Implemented in [`packages/cli/src/adapters/registry.ts`](file:///c:/Users/ASUS/D
 `open-agent-engine` enforces a **Self-Hosting Verification Loop** where the compiled CLI transpiles the engine's own `.agents/` configuration on every build cycle:
 
 ```mermaid
-graph LR
-    DevCode[packages/cli/src] -->|pnpm build| CompiledCLI[packages/cli/bin/agent-engine.js]
-    CompiledCLI -->|In-Situ Execution| SelfBuild[agent-engine build]
-    SelfBuild -->|Transpile| OwnCore[.agents/]
-    OwnCore -->|Verify Emit| TargetConfigs[CLAUDE.md, AGENTS.md, .cursor/]
+flowchart LR
+    DevCode["packages/cli/src"] -->|"pnpm build"| CompiledCLI["packages/cli/bin/agent-engine.js"]
+    CompiledCLI -->|"In-Situ Execution"| SelfBuild["agent-engine build"]
+    SelfBuild -->|"Transpile"| OwnCore[".agents/"]
+    OwnCore -->|"Verify Emit"| TargetConfigs["CLAUDE.md, AGENTS.md, .cursor/"]
 ```
 
 ### Self-Hosting Verification Invariants
 1. **Zero External Binary Execution**: Dogfooding commands MUST invoke the local compiled bundle (`node ./packages/cli/bin/agent-engine.js`) rather than global or published npm packages (`npx agent-engine`).
 2. **Deterministic Output Integrity**: Emitted target files (`CLAUDE.md`, `.cursor/rules/`, `AGENTS.md`) must match valid schema formats without unhandled errors, stdout/stderr noise, or truncation.
 3. **Mandatory Gate for PR Sign-off**: Every feature branch must execute this in-situ verification loop before handing off to `code-reviewer`.
+
+---
+
+## 7. Developer Education Architecture & Pedagogical Engine
+
+`open-agent-engine` incorporates an in-situ educational engine designed to teach developers distributed AI coding practices and token economics directly inside their workflow:
+
+```mermaid
+flowchart TD
+    subgraph Engine["Pedagogical Engine (@agent-engine/cli)"]
+        TourCmd["agent-engine tour<br>(4-Stage Mental Model Walkthrough)"]
+        ExplainCmd["agent-engine explain &lt;concept&gt;<br>(Visual Token Economics & AST Explainer)"]
+        DoctorCmd["agent-engine doctor --explain<br>(Linter with Architectural 'Why' Annotations)"]
+    end
+
+    subgraph Knowledge["Living Knowledge Scaffolding"]
+        Concepts["agent_docs/workflow_and_concepts.md"]
+        TokenMath["Token Overhead & Cache Analytics"]
+    end
+
+    Engine --> Knowledge
+    Knowledge --> DeveloperOutput["Informed Engineering Teams & 90% Context Savings"]
+```
+
+### A. Pedagogical Command Subsystems
+1. **Interactive Tour (`tour.ts`)**: Multi-step terminal interactive narrative breaking down the cowboy monolith anti-pattern vs. canonical progressive disclosure.
+2. **Concept Explainer (`explain.ts`)**: Visual ASCII / table renderer for core concepts: `progressive-disclosure`, `worktree`, `transpiler`, `ast`, `token-economics`.
+3. **Pedagogical Diagnostic Reporter (`doctor.ts`)**: Linter providing architectural justifications for all rules (e.g. why keeping rules <150 lines preserves prompt prefix caching and prevents attention degradation).
+
 

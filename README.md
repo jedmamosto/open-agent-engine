@@ -21,10 +21,9 @@ Modern AI coding agents (Claude Code, Cursor, Windsurf, Roo Code, Aider) are pow
 **Open Agent Engine solves this with 4 core pillars:**
 
 ```mermaid
-graph TD
-    Canonical[".agents/ Canonical Core<br/><i>(Personas, Rules &lt;150 lines, Skills, Hooks)</i>"]
-    
-    Compiler["agent-engine build<br/><i>(Zero-loss Transpiler)</i>"]
+flowchart TD
+    Canonical["Canonical Core (.agents/)<br>(Personas, Rules &lt; 150 lines, Skills, Hooks)"]
+    Compiler["agent-engine build<br>(Zero-loss Transpiler)"]
     
     Canonical --> Compiler
     
@@ -91,6 +90,43 @@ npx agent-engine build
 
 ---
 
+## 🎓 The Educational Mental Model: From Cowboy Prompts to Canonical Architecture
+
+Modern AI agent engineering requires unlearning the anti-pattern of **monolithic prompt dumping**. Open Agent Engine teaches and enforces a high-performance mental model:
+
+### 1. The 3-Level Progressive Disclosure Framework
+Instead of forcing 3,000+ tokens of instructions into every prompt, skills disclose context on demand:
+- **Level 1 (Metadata Index ~100 tokens)**: YAML frontmatter (`name`, `description`, `triggers`) stays in active context.
+- **Level 2 (Workflow Runbook ~500 tokens)**: Step-by-step markdown loaded into context *only when triggered*.
+- **Level 3 (Deterministic Assets 0 tokens)**: Auxiliary scripts and templates executed externally.
+
+> **💡 Token Economics**: Progressive disclosure reduces active token overhead by **90%** and keeps LLM prompt prefix caches hot (>95% hit rate).
+
+### 2. The 4-Stage Operational Workflow
+
+```mermaid
+flowchart LR
+    subgraph S1["1. Scaffold"]
+        A1["init wizard"]
+    end
+    subgraph S2["2. Equip"]
+        A2["skill package mgr"]
+    end
+    subgraph S3["3. Transpile"]
+        A3["build compiler"]
+    end
+    subgraph S4["4. Isolate"]
+        A4["ephemeral worktrees"]
+    end
+    S1 --> S2 --> S3 --> S4
+```
+
+For more learning resources:
+- 🎈 **Beginner?** Read our [Simple Beginner Guide (ELI5)](agent_docs/beginners_guide.md).
+- 📖 **Deep Dive?** Read our [Architectural Workflow & Mental Model Guide](agent_docs/workflow_and_concepts.md).
+
+---
+
 ## 📦 Canonical `.agents/` Architecture
 
 Open Agent Engine enforces a clean, progressive disclosure folder structure:
@@ -119,6 +155,9 @@ Open Agent Engine enforces a clean, progressive disclosure folder structure:
 | `agent-engine init [dir]` | Interactive scaffolding wizard for new or existing repositories |
 | `agent-engine init -y` | Non-interactive fast setup with defaults |
 | `agent-engine build` | Transpile canonical core to all configured target platforms |
+| `agent-engine tour` | Interactive 2-minute terminal tour explaining the mental model |
+| `agent-engine explain <concept>` | Visual CLI breakdown of progressive disclosure, worktrees, or targets |
+| `agent-engine doctor --explain` | Pedagogical diagnostic linter explaining the "Why" behind all rules |
 | `agent-engine skill list` | List all installed workspace skills and validation status |
 | `agent-engine skill list --catalog` | List installed skills + available community catalog skills |
 | `agent-engine skill add <name>` | Install a skill from catalog, local path, or URL |

@@ -9,6 +9,7 @@
 | `ENG-103` | `[CLI]` | `P0` | `[DONE]` | `packages/cli/src/commands/init.ts` | Interactive scaffolding wizard with prompts, template extraction, and auto-build. |
 | `ENG-104` | `[SkillHub]` | `P1` | `[DONE]` | `packages/cli/src/commands/skill.ts` | `agent-engine add skill`, `create skill`, `update skill` registry and git installer. |
 | `ENG-105` | `[Core]` | `P1` | `[DONE]` | `packages/core/src/worktree/**` | Git worktree isolation spawner and clean teardown automation. |
+| `ENG-106` | `[Pedagogy]` | `P1` | `[TODO]` | `packages/cli/src/commands/explain.ts`, `packages/cli/src/commands/tour.ts` | Interactive CLI guided tour (`tour`), concept visualizer (`explain`), and pedagogical diagnostic linter (`doctor --explain`). |
 
 ---
 
@@ -37,4 +38,11 @@
   - `agent-engine sync --push`: Export compiled open-agent-engine configurations and custom skills back into local Antigravity stores and target IDE configs.
   - **Drift & Semantic Diff Detection**: Detect when the open-source repository falls behind active local workflows or vice versa, offering interactive 3-way merge resolution.
   - **Selective Masking**: Ensure local private tokens/paths are sanitized during sync.
+
+### Epic 6: Developer Education & In-Situ Pedagogical Engine (`@agent-engine/cli`)
+- Interactive 2-minute mental model tour (`agent-engine tour`) covering the 4-stage lifecycle.
+- Visual concept explainer (`agent-engine explain <concept>`) rendering ASCII token economics charts.
+- Pedagogical diagnostic linter (`agent-engine doctor --explain`) teaching the architectural "Why" behind prompt cache invalidation and rule modularity.
+- Interactive tutorial sandbox templates (`init --template=interactive-tutorial`) with refactoring katas.
+
 

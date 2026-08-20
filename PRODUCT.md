@@ -40,3 +40,10 @@ It allows engineering teams to maintain a **Single Canonical Core** (`.agents/`)
 - Spawns isolated Git worktrees (`.worktrees/task-<id>/`) for concurrent subagent execution.
 - Prevents branch collisions and working tree dirty state.
 - Automated merge gating with test/typecheck verification.
+
+### Pillar 5: Developer Education & In-Situ Pedagogical Runtime
+- **Interactive Mental Model Tour (`agent-engine tour`)**: Terminal walkthrough teaching the paradigm shift from cowboy prompt dumping to progressive disclosure and canonical architecture.
+- **Visual Concept Explainer (`agent-engine explain <concept>`)**: On-demand CLI visualizations detailing progressive disclosure token savings, AST compilation flows, and Git worktree isolation.
+- **Pedagogical Diagnostic Linter (`agent-engine doctor --explain`)**: Scans workspace rules and explains the architectural rationale behind every constraint (e.g., prompt prefix cache invalidation on rules exceeding 150 lines).
+- **Interactive Sandbox & Katas (`init --template=interactive-tutorial`)**: Guided hands-on refactoring exercises for engineering teams.
+

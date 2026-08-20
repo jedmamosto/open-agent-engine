@@ -7,6 +7,8 @@ Cross-platform multi-agent scaffolding, skill package manager, and transpiler en
 - Product & Scope: inspect [PRODUCT.md](file:///PRODUCT.md)
 - Design & Visual Identity: inspect [DESIGN.md](file:///DESIGN.md)
 - Architecture & Compilers: inspect [agent_docs/architecture.md](file:///agent_docs/architecture.md)
+- Workflow & Educational Concepts: inspect [agent_docs/workflow_and_concepts.md](file:///agent_docs/workflow_and_concepts.md)
+- Beginner's ELI5 Guide: inspect [agent_docs/beginners_guide.md](file:///agent_docs/beginners_guide.md)
 - Subagents Directory: inspect [.agents/personas/](file:///c:/.agents/personas/)
 
 ## 2. Environment & Shell Commands

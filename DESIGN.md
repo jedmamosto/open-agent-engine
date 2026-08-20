@@ -52,3 +52,50 @@
   │
   ✔  Done in 84ms. All targets synchronized and verified.
 ```
+
+### C. Educational Guided Tour (`agent-engine tour`)
+```
+  ◆  Open Agent Engine: Interactive Mental Model Tour
+  │
+  ◇  Step 1/4: The Monolith Trap vs. Canonical Architecture
+  │  Traditional: 2,000-line .cursorrules -> 3,500 tokens/turn ($$$ + cache miss)
+  │  Agent Engine: .agents/ canonical core -> 320 tokens/turn (90% savings)
+  │
+  ◇  Step 2/4: 3-Level Progressive Disclosure
+  │  ├── Level 1: Frontmatter Index (~100 tokens active context)
+  │  ├── Level 2: SKILL.md Body (~500 tokens on-demand only)
+  │  └── Level 3: External scripts & assets (0 tokens active context)
+  │
+  ◇  Step 3/4: Zero-Loss Multi-Platform Transpilation
+  │  Compiles one AST to Claude, Cursor, Windsurf, Roo, Aider, & AAIF.
+  │
+  ◇  Step 4/4: Safe Subagent Worktree Isolation
+  │  Subagents edit ephemeral .worktrees/task-*, never dirtying git main.
+  │
+  ✔  Tour complete! Run 'agent-engine explain <concept>' for deep dives.
+```
+
+### D. Concept Explainer (`agent-engine explain progressive-disclosure`)
+```
+  ◆  Concept: 3-Level Progressive Disclosure
+  │
+  ├─ Level 1 (Metadata Index)   : ~100 tokens (Always active in system prompt)
+  ├─ Level 2 (Workflow Runbook) : ~500 tokens (Loaded ONLY on matching trigger)
+  └─ Level 3 (Execution Assets) : 0 context tokens (Executed via CLI / disk)
+  │
+  💡 Token Economics Impact:
+     • Turn Cost    : 3,500 tokens -> 320 tokens (90% reduction)
+     • Cache Hit Rate: 18% -> 96% (>4x faster response latency)
+```
+
+### E. Pedagogical Diagnostic Linter (`agent-engine doctor --explain`)
+```
+  ◆  Scanning workspace against architectural best practices...
+  │
+  ▲  Rule 'typescript-invariants' is 182 lines (target: <150 lines).
+  │  💡 Why this matters: Monolithic rules invalidate LLM prompt prefix caching,
+  │     costing ~300ms latency per request and degrading model reasoning focus.
+  │  👉 Recommendation: Split into 'typescript-types' and 'typescript-imports'.
+  │
+  ✔  Found 1 pedagogical recommendation. Canonical AST is healthy.
+```
