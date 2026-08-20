@@ -108,8 +108,8 @@ export async function loadAgentsProject(
   const rawPersonas: unknown[] = [];
   const personaFiles = await listFiles(personasDir);
   for (const file of personaFiles) {
+    const fullPath = path.join(personasDir, file);
     if (file.endsWith('.yaml') || file.endsWith('.yml')) {
-      const fullPath = path.join(personasDir, file);
       const content = await fs.readFile(fullPath, 'utf8');
       const parsed = parseYaml(content);
       if (parsed.success) {
@@ -119,6 +119,22 @@ export async function loadAgentsProject(
           personas.push(valid.data);
         }
       }
+    } else if (file.endsWith('.md')) {
+      const content = await fs.readFile(fullPath, 'utf8');
+      const fm = parseFrontmatter(content);
+      const fileId = path.basename(file, path.extname(file));
+      const personaObj: Record<string, unknown> = {
+        id: (fm.frontmatter as Record<string, unknown>).id || fileId,
+        ...(fm.frontmatter as Record<string, unknown>),
+      };
+      if (!personaObj.system_prompt && fm.body.trim()) {
+        personaObj.system_prompt = fm.body.trim();
+      }
+      rawPersonas.push(personaObj);
+      const valid = PersonaSchema.safeParse(personaObj);
+      if (valid.success) {
+        personas.push(valid.data);
+      }
     }
   }
 
@@ -127,8 +143,8 @@ export async function loadAgentsProject(
   const rawRules: unknown[] = [];
   const ruleFiles = await listFiles(rulesDir);
   for (const file of ruleFiles) {
+    const fullPath = path.join(rulesDir, file);
     if (file.endsWith('.yaml') || file.endsWith('.yml')) {
-      const fullPath = path.join(rulesDir, file);
       const content = await fs.readFile(fullPath, 'utf8');
       const parsed = parseYaml(content);
       if (parsed.success) {
@@ -138,6 +154,22 @@ export async function loadAgentsProject(
           rules.push(valid.data);
         }
       }
+    } else if (file.endsWith('.md')) {
+      const content = await fs.readFile(fullPath, 'utf8');
+      const fm = parseFrontmatter(content);
+      const fileId = path.basename(file, path.extname(file));
+      const ruleObj: Record<string, unknown> = {
+        id: (fm.frontmatter as Record<string, unknown>).id || fileId,
+        ...(fm.frontmatter as Record<string, unknown>),
+      };
+      if (!ruleObj.content && fm.body.trim()) {
+        ruleObj.content = fm.body.trim();
+      }
+      rawRules.push(ruleObj);
+      const valid = RuleSchema.safeParse(ruleObj);
+      if (valid.success) {
+        rules.push(valid.data);
+      }
     }
   }
 
@@ -146,15 +178,24 @@ export async function loadAgentsProject(
   const rawHooks: unknown[] = [];
   const hookFiles = await listFiles(hooksDir);
   for (const file of hookFiles) {
-    if (file.endsWith('.yaml') || file.endsWith('.yml')) {
-      const fullPath = path.join(hooksDir, file);
+    const fullPath = path.join(hooksDir, file);
+    if (file.endsWith('.yaml') || file.endsWith('.yml') || file.endsWith('.json')) {
       const content = await fs.readFile(fullPath, 'utf8');
       const parsed = parseYaml(content);
       if (parsed.success) {
-        rawHooks.push(parsed.data);
-        const valid = HookSchema.safeParse(parsed.data);
-        if (valid.success) {
-          hooks.push(valid.data);
+        const raw = parsed.data;
+        const items = Array.isArray(raw)
+          ? raw
+          : (raw && typeof raw === 'object' && 'hooks' in (raw as Record<string, unknown>) && Array.isArray((raw as Record<string, unknown>).hooks))
+            ? (raw as Record<string, unknown>).hooks as unknown[]
+            : [raw];
+
+        for (const item of items) {
+          rawHooks.push(item);
+          const valid = HookSchema.safeParse(item);
+          if (valid.success) {
+            hooks.push(valid.data);
+          }
         }
       }
     }
