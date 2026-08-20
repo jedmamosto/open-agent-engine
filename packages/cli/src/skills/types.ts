@@ -51,6 +51,7 @@ export interface SkillAddOptions {
   nameOrSource: string;
   name?: string;
   rootDir?: string;
+  dir?: string;
   agentsDir?: string;
   force?: boolean;
   build?: boolean;
@@ -77,6 +78,7 @@ export interface SkillCreateOptions {
   template?: 'progressive' | 'standard' | 'minimal';
   body?: string;
   rootDir?: string;
+  dir?: string;
   agentsDir?: string;
   force?: boolean;
   build?: boolean;
@@ -95,6 +97,7 @@ export interface SkillCreateResult {
 
 export interface SkillListOptions {
   rootDir?: string;
+  dir?: string;
   agentsDir?: string;
   includeCatalog?: boolean;
 }
@@ -108,6 +111,7 @@ export interface SkillListResult {
 export interface SkillRemoveOptions {
   name: string;
   rootDir?: string;
+  dir?: string;
   agentsDir?: string;
   build?: boolean;
   autoBuild?: boolean;

@@ -76,11 +76,12 @@ function resolveAgentsPaths(rootDir: string, agentsDirOption?: string): {
  * Installs a skill from the built-in catalog, local path, or remote URL.
  */
 export async function executeSkillAdd(options: SkillAddOptions): Promise<SkillAddResult> {
-  const rootDir = options.rootDir || process.cwd();
+  const rootDir = options.dir || options.rootDir || process.cwd();
   const { agentsRoot, skillsDir } = resolveAgentsPaths(rootDir, options.agentsDir);
 
   // 1. Resolve skill from catalog, path, or URL
-  const resolved = await resolveSkill(options.nameOrSource, { rootDir });
+  const sourceOrName = options.nameOrSource || (options as any).target || (options as any).source;
+  const resolved = await resolveSkill(sourceOrName, { rootDir });
 
   // Allow custom name override if specified
   const skillName = options.name || resolved.name;
@@ -154,7 +155,7 @@ export async function executeSkillAdd(options: SkillAddOptions): Promise<SkillAd
  * Scaffolds a new custom skill template in .agents/skills/<name>/SKILL.md.
  */
 export async function executeSkillCreate(options: SkillCreateOptions): Promise<SkillCreateResult> {
-  const rootDir = options.rootDir || process.cwd();
+  const rootDir = options.dir || options.rootDir || process.cwd();
   const { agentsRoot, skillsDir } = resolveAgentsPaths(rootDir, options.agentsDir);
   const skillName = options.name.trim();
 
@@ -226,7 +227,7 @@ export async function executeSkillCreate(options: SkillCreateOptions): Promise<S
  * Lists all installed skills in .agents/skills/ and optionally catalog skills.
  */
 export async function executeSkillList(options: SkillListOptions = {}): Promise<SkillListResult> {
-  const rootDir = options.rootDir || process.cwd();
+  const rootDir = options.dir || options.rootDir || process.cwd();
   const { agentsRoot, skillsDir } = resolveAgentsPaths(rootDir, options.agentsDir);
 
   const { config } = await readOrCreateConfig(agentsRoot);
@@ -365,7 +366,7 @@ export async function executeSkillList(options: SkillListOptions = {}): Promise<
 export async function executeSkillRemove(
   options: SkillRemoveOptions
 ): Promise<SkillRemoveResult> {
-  const rootDir = options.rootDir || process.cwd();
+  const rootDir = options.dir || options.rootDir || process.cwd();
   const { agentsRoot, skillsDir } = resolveAgentsPaths(rootDir, options.agentsDir);
   const skillName = options.name.trim();
 

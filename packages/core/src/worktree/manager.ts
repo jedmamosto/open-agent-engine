@@ -336,11 +336,15 @@ export async function mergeWorktree(options: WorktreeMergeOptions): Promise<Work
       const dirtyFiles = statusRes.stdout
         .trim()
         .split(/\r?\n/)
-        .map((line) => line.slice(3).trim());
-      throw new WorktreeDirtyError(
-        `Cannot merge dirty worktree at "${worktreePath}": uncommitted changes detected.`,
-        dirtyFiles
-      );
+        .filter((line) => line.trim().length > 0)
+        .map((line) => line.slice(2).trim().replace(/^["']|["']$/g, '').replace(/\\/g, '/'))
+        .filter((file) => !file.startsWith('.worktrees') && !file.includes('.worktrees/'));
+      if (dirtyFiles.length > 0) {
+        throw new WorktreeDirtyError(
+          `Cannot merge dirty worktree at "${worktreePath}": uncommitted changes detected.`,
+          dirtyFiles
+        );
+      }
     }
   }
 
@@ -365,11 +369,15 @@ export async function mergeWorktree(options: WorktreeMergeOptions): Promise<Work
     const dirtyFiles = rootStatus.stdout
       .trim()
       .split(/\r?\n/)
-      .map((line) => line.slice(3).trim());
-    throw new WorktreeDirtyError(
-      `Cannot merge into "${targetBranch}": root repository has uncommitted changes.`,
-      dirtyFiles
-    );
+      .filter((line) => line.trim().length > 0)
+      .map((line) => line.slice(2).trim().replace(/^["']|["']$/g, '').replace(/\\/g, '/'))
+      .filter((file) => !file.startsWith('.worktrees') && !file.includes('.worktrees/'));
+    if (dirtyFiles.length > 0) {
+      throw new WorktreeDirtyError(
+        `Cannot merge into "${targetBranch}": root repository has uncommitted changes.`,
+        dirtyFiles
+      );
+    }
   }
 
   const checkoutRes = await execGitWithRetry(exec, ['checkout', targetBranch], { cwd });

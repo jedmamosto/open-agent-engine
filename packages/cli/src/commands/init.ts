@@ -15,6 +15,7 @@ import { normalizePathSeparators } from '../adapters/utils.js';
 
 export interface InitOptions {
   rootDir?: string;
+  dir?: string;
   yes?: boolean;
   targets?: string[] | string;
   name?: string;
@@ -68,7 +69,7 @@ function parseTargetsInput(targetsInput?: string[] | string): string[] | undefin
  * Executes the agent-engine interactive scaffolding wizard and project initializer.
  */
 export async function executeInit(options: InitOptions = {}): Promise<InitResult> {
-  const rootDir = path.resolve(options.rootDir || process.cwd());
+  const rootDir = path.resolve(options.dir || options.rootDir || process.cwd());
   const agentsDir = path.join(rootDir, '.agents');
   const isDryRun = options.dryRun === true;
 
