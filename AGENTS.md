@@ -28,6 +28,8 @@ Execute in shell with strict sequential separators:
    - *Why*: Keep root instruction files under 150 lines to prevent prompt cache invalidations.
 3. **Verify All Tests Pass Before PR**
    - *Why*: Prevent broken regressions across adapter pipelines.
+4. **Submit Changes via Branch PR with Approval**
+   - *Why*: `main` branch is protected by GitHub Repository Rulesets to prevent unvetted code changes.
 
 ### B. NEVER Do
 1. **Never Write Platform-Specific Logic in Core Schemas**

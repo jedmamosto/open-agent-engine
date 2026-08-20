@@ -61,20 +61,28 @@ Every contribution must pass our automated quality gates:
 
 ---
 
-## 5. Development Workflow & Pull Requests
+## 5. Development Workflow, Branch Protection & Pull Requests
 
-1. **Branch Naming**:
+1. **Branch Protection Ruleset (`main`)**:
+   - Direct `git push` to `main` is strictly disabled by GitHub Repository Rulesets.
+   - All changes must be proposed via a branch Pull Request.
+   - Merging requires at least **1 approving review** and resolution of all conversation threads.
+   - Stale approvals are automatically dismissed when new commits are pushed.
+   - Force pushes and branch deletions on `main` are blocked.
+   - Only repository administrators hold emergency bypass privileges.
+2. **Branch Naming**:
    - `feat/<feature-name>` for new capabilities
    - `fix/<bug-name>` for bug fixes
    - `docs/<doc-name>` for documentation updates
-2. **Commit Convention**:
+3. **Commit Convention**:
    We follow [Conventional Commits](https://www.conventionalcommits.org/):
    - `feat(cli): add interactive skill search`
    - `fix(core): resolve Windows index lock retry in worktree manager`
    - `test(adapters): add snapshot test for Roo Code mode parser`
-3. **Submitting a Pull Request**:
+4. **Submitting a Pull Request**:
    - Ensure `pnpm test` and `pnpm build` pass with exit code 0.
    - Describe the motivation, architectural trade-offs, and verification steps in the PR description.
+   - Request review from maintainers and address review comments before merge.
 
 ---
 

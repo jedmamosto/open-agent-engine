@@ -94,7 +94,11 @@ flowchart TD
 
 ### Stage 4: Isolated Execution & Subagent Gating (`agent-engine spawn`)
 - Dispatches subagents using the **PTCF Framework** (Persona, Task, Context, Format).
-- Runs tasks inside isolated Git worktrees (`.worktrees/task-<id>`), preventing collisions on `main`.
+- Runs tasks inside isolated Git worktrees (`.worktrees/task-<id>`), preventing unvetted collisions on `main`.
+- **Repository Ruleset Security Gate**:
+  - The `main` branch is protected by GitHub Repository Rulesets: direct pushes, deletions, and force pushes are blocked.
+  - Merging into `main` requires a Pull Request with at least 1 approval and resolved review threads.
+  - Only repository administrators hold bypass privileges for emergency maintenance.
 - Enforces a 3-stage quality gate:
   1. **Stage 1**: Implementation subagent writes code and verifies tests.
   2. **Stage 2**: `code-reviewer` audits the diff against architectural contracts.
