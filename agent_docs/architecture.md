@@ -245,3 +245,23 @@ Implemented in [`packages/cli/src/adapters/registry.ts`](file:///c:/Users/ASUS/D
 - **Level 1**: Metadata in `SKILL.md` frontmatter (indexed in parent context).
 - **Level 2**: Core execution workflow in `SKILL.md` body (loaded upon trigger).
 - **Level 3**: Auxiliary assets in `scripts/`, `references/`, `templates/` (loaded only on explicit file view).
+
+---
+
+## 6. In-Situ Dogfooding & Self-Hosting Pipeline
+
+`open-agent-engine` enforces a **Self-Hosting Verification Loop** where the compiled CLI transpiles the engine's own `.agents/` configuration on every build cycle:
+
+```mermaid
+graph LR
+    DevCode[packages/cli/src] -->|pnpm build| CompiledCLI[packages/cli/bin/agent-engine.js]
+    CompiledCLI -->|In-Situ Execution| SelfBuild[agent-engine build]
+    SelfBuild -->|Transpile| OwnCore[.agents/]
+    OwnCore -->|Verify Emit| TargetConfigs[CLAUDE.md, AGENTS.md, .cursor/]
+```
+
+### Self-Hosting Verification Invariants
+1. **Zero External Binary Execution**: Dogfooding commands MUST invoke the local compiled bundle (`node ./packages/cli/bin/agent-engine.js`) rather than global or published npm packages (`npx agent-engine`).
+2. **Deterministic Output Integrity**: Emitted target files (`CLAUDE.md`, `.cursor/rules/`, `AGENTS.md`) must match valid schema formats without unhandled errors, stdout/stderr noise, or truncation.
+3. **Mandatory Gate for PR Sign-off**: Every feature branch must execute this in-situ verification loop before handing off to `code-reviewer`.
+

@@ -1,0 +1,13 @@
+# open-agent-engine - Cascade AI Directives
+
+> Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine
+
+## Environment & Commands
+- Build: `pnpm build`
+- Test: `pnpm test`
+- Typecheck: `pnpm typecheck`
+- Dev: `pnpm dev`
+
+## Operational Boundaries
+- ALWAYS execute tests before submitting diffs.
+- NEVER bypass type validation or delete safety hooks.

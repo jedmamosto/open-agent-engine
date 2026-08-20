@@ -1,0 +1,13 @@
+# open-agent-engine - Cline/Roo Instructions
+
+> Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine
+
+## Shell Commands
+- Build: `pnpm build`
+- Test: `pnpm test`
+- Typecheck: `pnpm typecheck`
+- Dev: `pnpm dev`
+
+## Operational Invariants
+- Run all test suites before concluding any task.
+- Respect module boundaries and avoid monolithic file expansions.

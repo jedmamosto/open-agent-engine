@@ -1,13 +1,19 @@
 ---
-description: "Open Multi-Agent Engine Core Architecture and Rules"
-globs: "**/*"
+description: Project architectural overview, shell commands, and agent guidelines for open-agent-engine
+globs: ""
 alwaysApply: true
 ---
 
-# Project Directives
+# open-agent-engine Architectural Guidelines
 
-Adhere strictly to directives defined in [AGENTS.md](file:///C:/Users/ASUS/Documents/VSCode/open-agent-engine/AGENTS.md).
+> Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine
 
-- Respect single canonical core in `.agents/`.
-- Validate all user configs with Zod schemas.
-- Ensure emitted adapter configurations stay strictly under 150 lines.
+## Shell Commands
+- Build: `pnpm build`
+- Test: `pnpm test`
+- Typecheck: `pnpm typecheck`
+- Dev: `pnpm dev`
+
+## Operational Boundaries
+- Always execute tests and type verification before committing code changes.
+- Adhere to modular boundary contracts across packages.

@@ -1,12 +1,35 @@
+# Dependencies
 node_modules/
+.pnpm-store/
+
+# Build & Compilation Outputs
 dist/
 build/
-.turbo/
-.worktrees/
-*.log
 *.tsbuildinfo
-.DS_Store
-Thumbs.db
+.turbo/
+
+# Ephemeral Git Worktrees & Test Artifacts
+.worktrees/
+test-*/
+dogfood-*/
+
+# Environment & Secrets
 .env
 .env.local
 .env.*.local
+*.pem
+
+# Logs & Diagnostics
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+*.sublime-project
+*.sublime-workspace
+

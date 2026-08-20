@@ -1,9 +1,15 @@
-# Claude Code Directives
+# open-agent-engine
 
-Please inspect and adhere to root directives in [AGENTS.md](file:///C:/Users/ASUS/Documents/VSCode/open-agent-engine/AGENTS.md).
+> Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine
 
-## Quick Commands
-- Install: `pnpm install`
+## 1. Quick Start & Shell Commands
+Run commands using native shell syntax:
 - Build: `pnpm build`
-- Typecheck: `pnpm typecheck`
 - Test: `pnpm test`
+- Typecheck: `pnpm typecheck`
+- Dev: `pnpm dev`
+
+## 5. Operational Invariants
+- **ALWAYS**: Run verification tests (`pnpm test`) before submitting code changes.
+- **ALWAYS**: Keep generated instruction files context-lean and modular.
+- **NEVER**: Commit untested platform adapters or breaking schema changes.

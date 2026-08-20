@@ -1,0 +1,4 @@
+auto-commits: false
+test-cmd: pnpm test
+read:
+  - .aider.prompt.md
