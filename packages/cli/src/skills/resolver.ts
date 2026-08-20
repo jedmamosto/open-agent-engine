@@ -5,7 +5,7 @@ import {
   SkillFrontmatterSchema,
   validateSkillFrontmatter,
   type SkillFrontmatter,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 import { findCatalogSkill } from './catalog.js';
 import type { ResolvedSkillPayload } from './types.js';
 

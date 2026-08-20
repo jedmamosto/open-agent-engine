@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { CursorAdapter } from '../../adapters/cursor.js';
-import { parseFrontmatter } from '@agent-engine/core';
+import { parseFrontmatter } from 'open-agent-engine-core';
 import { createMockProject } from '../fixtures/mock-project.js';
 
 describe('CursorAdapter', () => {

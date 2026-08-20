@@ -1,4 +1,4 @@
-import type { CanonicalTarget, AgentsProjectAST } from '@agent-engine/core';
+import type { CanonicalTarget, AgentsProjectAST } from 'open-agent-engine-core';
 import { BaseAdapter } from './base.js';
 import type {
   CompileOptions,

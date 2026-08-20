@@ -5,7 +5,7 @@ import pc from 'picocolors';
 import {
   normalizeTarget,
   type CanonicalTarget,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 import {
   generateProjectTemplates,
   DEFAULT_TARGETS,

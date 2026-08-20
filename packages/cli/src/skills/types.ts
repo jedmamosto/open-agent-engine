@@ -1,4 +1,4 @@
-import type { SkillFrontmatter } from '@agent-engine/core';
+import type { SkillFrontmatter } from 'open-agent-engine-core';
 import type { BuildResult } from '../commands/build.js';
 
 export interface CatalogSkillDefinition {

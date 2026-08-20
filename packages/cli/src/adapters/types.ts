@@ -7,7 +7,7 @@ import type {
   CanonicalTarget,
   AgentsProjectAST,
   ValidationResult,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 
 export interface CompiledFile {
   path: string;

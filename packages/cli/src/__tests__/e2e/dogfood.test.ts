@@ -26,7 +26,7 @@ import {
   listWorktrees,
   mergeWorktree,
   removeWorktree,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 
 const execFileAsync = promisify(execFile);
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { AiderAdapter } from '../../adapters/aider.js';
-import { parseYaml } from '@agent-engine/core';
+import { parseYaml } from 'open-agent-engine-core';
 import { createMockProject } from '../fixtures/mock-project.js';
 
 describe('AiderAdapter', () => {

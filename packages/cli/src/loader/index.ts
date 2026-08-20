@@ -16,7 +16,7 @@ import {
   type AgentsProjectAST,
   type ValidationResult,
   type DiagnosticIssue,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 import type {
   LoadedProjectResult,
   ResolvedAgentsProject,

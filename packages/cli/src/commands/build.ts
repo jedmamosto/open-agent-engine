@@ -4,7 +4,7 @@ import {
   normalizeTarget,
   type CanonicalTarget,
   type Target,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 import { loadAgentsProject, formatDiagnostics } from '../loader/index.js';
 import { defaultAdapterRegistry, AdapterRegistry } from '../adapters/registry.js';
 import type {

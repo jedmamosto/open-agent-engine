@@ -1,5 +1,5 @@
 {
-  "name": "@agent-engine/core",
+  "name": "open-agent-engine-core",
   "version": "0.1.0",
   "description": "Core AST, schemas, validators, and worktree isolation engine for open-agent-engine",
   "type": "module",

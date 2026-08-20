@@ -1,10 +1,11 @@
 {
-  "name": "@agent-engine/cli",
+  "name": "open-agent-engine",
   "version": "0.1.0",
   "description": "CLI scaffolding wizard and cross-platform transpiler for open-agent-engine",
   "type": "module",
   "bin": {
-    "agent-engine": "./bin/agent-engine.js"
+    "agent-engine": "./bin/agent-engine.js",
+    "open-agent-engine": "./bin/agent-engine.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,7 +30,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@agent-engine/core": "workspace:*",
+    "open-agent-engine-core": "workspace:*",
     "@clack/prompts": "^0.9.0",
     "cac": "^6.7.14",
     "picocolors": "^1.1.1",

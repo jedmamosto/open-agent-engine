@@ -6,7 +6,7 @@ import {
   SkillFrontmatterSchema,
   type CanonicalTarget,
   type AgentsProjectAST,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 import type {
   Adapter,
   CompileOptions,

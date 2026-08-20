@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import YAML from 'yaml';
-import { ConfigSchema, type Config } from '@agent-engine/core';
+import { ConfigSchema, type Config } from 'open-agent-engine-core';
 
 async function pathExists(p: string): Promise<boolean> {
   try {

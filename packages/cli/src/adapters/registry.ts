@@ -2,7 +2,7 @@ import {
   normalizeTarget,
   type CanonicalTarget,
   type Target,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 import type { Adapter } from './types.js';
 import { ClaudeAdapter } from './claude.js';
 import { CursorAdapter } from './cursor.js';

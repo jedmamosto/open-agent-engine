@@ -5,8 +5,8 @@
   "description": "Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine",
   "type": "module",
   "scripts": {
-    "build": "pnpm --filter \"@agent-engine/*\" run build",
-    "dev": "pnpm --filter \"@agent-engine/cli\" run dev",
+    "build": "pnpm --filter \"./packages/*\" run build",
+    "dev": "pnpm --filter \"open-agent-engine\" run dev",
     "test": "vitest run",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc -b",

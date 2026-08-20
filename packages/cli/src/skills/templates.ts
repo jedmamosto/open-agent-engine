@@ -1,5 +1,5 @@
 import YAML from 'yaml';
-import { SkillFrontmatterSchema, type SkillFrontmatter } from '@agent-engine/core';
+import { SkillFrontmatterSchema, type SkillFrontmatter } from 'open-agent-engine-core';
 
 export interface TemplateGenerateOptions {
   name: string;

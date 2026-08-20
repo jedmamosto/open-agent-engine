@@ -5,7 +5,7 @@ import {
   validateSkillFrontmatter,
   SkillFrontmatterSchema,
   type SkillFrontmatter,
-} from '@agent-engine/core';
+} from 'open-agent-engine-core';
 import { executeBuild, type BuildResult } from './build.js';
 import {
   resolveSkill,
