@@ -1,23 +1,70 @@
 {
-  "name": "open-agent-engine-monorepo",
+  "name": "open-agent-engine",
   "version": "0.1.0",
-  "private": true,
-  "description": "Cross-platform multi-agent scaffolding, skill package manager, and transpiler engine",
+  "description": "The open-source compiler and multi-agent runtime for coding agents",
   "type": "module",
+  "bin": {
+    "agent-engine": "./bin/agent-engine.js",
+    "open-agent-engine": "./bin/agent-engine.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "bin",
+    "!dist/__tests__",
+    "!dist/**/*.test.*",
+    "!dist/**/__tests__/**"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jedmamosto/open-agent-engine.git"
+  },
+  "keywords": [
+    "agent",
+    "ai",
+    "coding-agent",
+    "scaffolding",
+    "claude-code",
+    "cursor",
+    "windsurf",
+    "roo-code",
+    "aider",
+    "aaif",
+    "worktree",
+    "skills"
+  ],
   "scripts": {
-    "build": "pnpm --filter \"./packages/*\" run build",
-    "dev": "pnpm --filter \"open-agent-engine\" run dev",
+    "build": "tsc",
+    "dev": "tsc --watch",
     "test": "vitest run",
     "lint": "eslint . --ext .ts",
-    "typecheck": "tsc -b",
-    "clean": "pnpm -r exec rm -rf dist node_modules"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.9.0",
+    "cac": "^6.7.14",
+    "picocolors": "^1.1.1",
+    "yaml": "^2.7.0",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
   },
-  "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": ">=20.0.0"
   }
