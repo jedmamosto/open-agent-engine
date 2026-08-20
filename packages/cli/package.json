@@ -16,7 +16,9 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "!dist/__tests__",
+    "!dist/**/*.test.*"
   ],
   "publishConfig": {
     "access": "public"

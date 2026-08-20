@@ -12,7 +12,9 @@
     "directory": "packages/core"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/__tests__",
+    "!dist/**/*.test.*"
   ],
   "publishConfig": {
     "access": "public"
